@@ -7,14 +7,30 @@
 
   <body>
     <h1>Mastermind Jeopardy</h1>
-    <button>New Question</button>
+    <button id='newQ'>New Question</button>
     <h3>Question title: <div id='qtitle'></div></h3>
     <h3>Question description: <div id='qdesc'></div></h3>
-    <button>Show answer</button>
+    <button id='answer'>Show answer</button>
     <h4>ANSWER: <div id='answer'></div></h4>
   </body>
-  <script>
-	  const xhr = new XMLHttpRequest();
+
+  <script>	
+const xhr = new XMLHttpRequest();
+const newQ = document.getElementById('newQ');
+const answer = document.getElementById('answer');
+const qtitle = document.getElementById('qtitle');
+const qdesc = document.getElementById('qdesc');
+
+newQ.onclick = () => {
+  xhr.open('GET', 'jservice.io/api/random');
+  xhr.onreadystatechange = () => {
+    if (xhr.readystate === 4) {
+      qtitle.innerHTML = xhr.responseText; 
+    }
+  }
+  xhr.send();
+
+}
 
   </script>
 </html>
