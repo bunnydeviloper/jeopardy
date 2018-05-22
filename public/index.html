@@ -8,10 +8,12 @@
   <body>
     <h1>Mastermind Jeopardy</h1>
     <button id='newQ'>New Question</button>
-    <h3>Question title: <div id='qtitle'></div></h3>
-    <h3>Question description: <div id='qdesc'></div></h3>
+    <h3>Question title:</h3>
+    <div id='qtitle'></div>
+    <h3>Question description:</h3>
+    <div id='qdesc'></div>
     <button id='answer'>Show answer</button>
-    <h4>ANSWER: <div id='answer'></div></h4>
+    <h4>ANSWER: <div id='qanswer'></div></h4>
   </body>
 
   <script>	
@@ -20,12 +22,21 @@ const newQ = document.getElementById('newQ');
 const answer = document.getElementById('answer');
 const qtitle = document.getElementById('qtitle');
 const qdesc = document.getElementById('qdesc');
+const qanswer = document.getElementById('qanswer');
 
 newQ.onclick = () => {
-  xhr.open('GET', 'jservice.io/api/random');
+  qanswer.style.display = 'none';
+  xhr.open('GET', 'http://jservice.io/api/random');
   xhr.onreadystatechange = () => {
-    if (xhr.readystate === 4) {
-      qtitle.innerHTML = xhr.responseText; 
+    if (xhr.readyState === 4) {
+      const data = JSON.parse(xhr.response)[0];
+      qtitle.innerHTML = data.category.title; 
+      qdesc.innerHTML = data.question;
+	    console.log(data);
+      answer.onclick = () => {
+	qanswer.style.display = 'inline-block';
+        qanswer.innerHTML = data.answer;
+      }
     }
   }
   xhr.send();
